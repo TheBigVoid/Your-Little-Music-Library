@@ -91,3 +91,18 @@ export function MusicIcon(props: IconProps) {
     </Icon>
   )
 }
+
+export function UpdateIcon(props: IconProps) {
+  return (
+    <Icon {...props}>
+      <path
+        d="M20 12a8 8 0 1 1-2.34-5.66M20 4v4h-4"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </Icon>
+  )
+}

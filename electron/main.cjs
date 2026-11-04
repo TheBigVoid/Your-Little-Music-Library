@@ -1,6 +1,7 @@
 // Electron entry point: opens the built web app (dist/) in a desktop window.
 const { app, BrowserWindow, Menu, nativeTheme, shell } = require('electron')
 const path = require('node:path')
+const { setUpUpdates } = require('./updater.cjs')
 
 // In development, `npm run app:dev` points this at the Vite dev server.
 const devServerUrl = process.env.VITE_DEV_SERVER_URL
@@ -20,6 +21,7 @@ function createWindow() {
       contextIsolation: true,
       nodeIntegration: false,
       sandbox: true,
+      preload: path.join(__dirname, 'preload.cjs'),
     },
   })
 
@@ -58,6 +60,7 @@ if (!app.requestSingleInstanceLock()) {
 
   app.whenReady().then(() => {
     if (!devServerUrl) Menu.setApplicationMenu(null)
+    setUpUpdates()
     createWindow()
     app.on('activate', () => {
       if (BrowserWindow.getAllWindows().length === 0) createWindow()

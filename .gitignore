@@ -25,3 +25,6 @@ dist-ssr
 
 # Desktop app builds (electron-builder)
 release
+
+# Local update-server config for testing updates in development
+dev-app-update.yml

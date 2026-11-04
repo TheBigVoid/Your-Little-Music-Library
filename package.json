@@ -15,8 +15,9 @@
     "test": "vitest run",
     "app": "npm run build && electron .",
     "app:dev": "node electron/dev.mjs",
-    "dist": "npm run build && electron-builder",
-    "dist:win": "npm run build && electron-builder --win"
+    "dist": "npm run build && electron-builder --publish never",
+    "dist:win": "npm run build && electron-builder --win --publish never",
+    "release:win": "npm run build && electron-builder --win --publish always"
   },
   "devDependencies": {
     "@types/node": "^24.13.3",
@@ -41,6 +42,8 @@
     "files": [
       "dist/**/*",
       "electron/main.cjs",
+      "electron/preload.cjs",
+      "electron/updater.cjs",
       "package.json"
     ],
     "win": {
@@ -50,37 +53,47 @@
           "arch": [
             "x64"
           ]
-        },
-        {
-          "target": "portable",
-          "arch": [
-            "x64"
-          ]
         }
       ],
       "icon": "build/icon.ico"
     },
     "nsis": {
-      "oneClick": false,
-      "allowToChangeInstallationDirectory": true,
-      "artifactName": "${productName}-Setup-${version}.${ext}"
-    },
-    "portable": {
-      "artifactName": "${productName}-${version}-portable.${ext}"
+      "oneClick": true,
+      "perMachine": false,
+      "runAfterFinish": true,
+      "createDesktopShortcut": "always",
+      "createStartMenuShortcut": true,
+      "shortcutName": "Your Little Music Library",
+      "uninstallDisplayName": "Your Little Music Library",
+      "deleteAppDataOnUninstall": false,
+      "artifactName": "Your-Little-Music-Library-Setup-${version}.${ext}"
     },
     "linux": {
       "target": [
         "AppImage"
       ],
       "icon": "build/icon.png",
-      "category": "AudioVideo"
+      "category": "AudioVideo",
+      "artifactName": "Your-Little-Music-Library-${version}.${ext}"
     },
     "mac": {
       "target": [
         "dmg"
       ],
       "icon": "build/icon.png",
-      "category": "public.app-category.music"
-    }
+      "category": "public.app-category.music",
+      "artifactName": "Your-Little-Music-Library-${version}.${ext}"
+    },
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "TheBigVoid",
+        "repo": "Your-Little-Music-Library",
+        "releaseType": "release"
+      }
+    ]
+  },
+  "dependencies": {
+    "electron-updater": "^6.8.11"
   }
 }

@@ -2,6 +2,8 @@ import { useEffect, useRef, useState, type DragEvent } from 'react'
 import { MusicIcon, PlusIcon } from './components/Icons'
 import { PlayerBar } from './components/PlayerBar'
 import { SongList } from './components/SongList'
+import { UpdateBanner, UpdateMenu } from './components/UpdateMenu'
+import { useUpdates } from './desktop/useUpdates'
 import { usePlayer } from './player/usePlayer'
 import './App.css'
 
@@ -11,6 +13,7 @@ function hasFiles(event: DragEvent) {
 
 export default function App() {
   const player = usePlayer()
+  const updates = useUpdates()
   const fileInput = useRef<HTMLInputElement>(null)
   const [isDragging, setIsDragging] = useState(false)
   const [notice, setNotice] = useState<string | null>(null)
@@ -55,9 +58,12 @@ export default function App() {
           <MusicIcon className="brand__icon" />
           <h1>Your Little Music Library</h1>
         </div>
-        <button type="button" className="button" onClick={() => fileInput.current?.click()}>
-          <PlusIcon /> Add songs
-        </button>
+        <div className="app-header__actions">
+          {updates && <UpdateMenu updates={updates} />}
+          <button type="button" className="button" onClick={() => fileInput.current?.click()}>
+            <PlusIcon /> Add songs
+          </button>
+        </div>
         <input
           ref={fileInput}
           type="file"
@@ -73,6 +79,7 @@ export default function App() {
       </header>
 
       <main className="library">
+        {updates && <UpdateBanner updates={updates} />}
         {message && (
           <p className={player.error ? 'banner banner--error' : 'banner'} role="status">
             {message}
