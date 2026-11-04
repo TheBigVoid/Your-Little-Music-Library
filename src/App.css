@@ -126,6 +126,139 @@ button:focus-visible,
   color: var(--danger);
 }
 
+.banner--update {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 16px;
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+
+.banner__actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.button--small {
+  padding: 5px 12px;
+  font-size: 0.9rem;
+}
+
+.text-button {
+  padding: 5px 10px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--text-muted);
+  font: inherit;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.text-button:hover {
+  color: var(--text);
+  background: var(--surface-hover);
+}
+
+/* ---------- Updates menu (desktop app only) ---------- */
+
+.app-header__actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: none;
+}
+
+.update-menu {
+  position: relative;
+}
+
+.update-menu__toggle {
+  position: relative;
+}
+
+.update-menu__dot {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 2px var(--bg);
+}
+
+.update-menu__panel {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 20;
+  display: grid;
+  gap: 6px;
+  width: min(300px, calc(100vw - 32px));
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface-raised);
+  box-shadow: 0 12px 32px rgb(0 0 0 / 0.25);
+}
+
+.update-menu__title {
+  margin: 0;
+  font-weight: 650;
+}
+
+.update-menu__version,
+.update-menu__status {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.update-menu__status {
+  min-height: 1.45em;
+  color: var(--text);
+}
+
+.update-menu__status--error {
+  color: var(--danger);
+}
+
+.update-menu__action {
+  justify-content: center;
+  margin-top: 6px;
+}
+
+.button:disabled:hover {
+  background: var(--accent);
+}
+
+.update-menu__auto {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-top: 8px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+  cursor: pointer;
+}
+
+.update-menu__auto input {
+  margin: 3px 0 0;
+  accent-color: var(--accent);
+}
+
+.update-menu__auto small {
+  display: block;
+  margin-top: 2px;
+  color: var(--text-muted);
+  font-size: 0.82rem;
+  line-height: 1.35;
+}
+
 .empty-state {
   display: grid;
   justify-items: center;

@@ -1,0 +1,57 @@
+name: Build Windows app
+
+# Every push and pull request builds the installer and uploads it as a workflow artifact.
+# Pushing a version tag (for example v1.1.0) also publishes it as a GitHub release.
+# Installed copies of the app check those releases for updates.
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+      - run: npm run lint
+      - run: npm test
+
+      - name: Check the tag matches the version in package.json
+        if: startsWith(github.ref, 'refs/tags/v')
+        shell: bash
+        run: |
+          version="v$(node -p "require('./package.json').version")"
+          if [ "$version" != "$GITHUB_REF_NAME" ]; then
+            echo "::error::Tag $GITHUB_REF_NAME doesn't match package.json version $version. Use 'npm version' to make the tag."
+            exit 1
+          fi
+
+      - name: Build the installer
+        if: ${{ !startsWith(github.ref, 'refs/tags/v') }}
+        run: npm run dist:win
+
+      - name: Build the installer and publish the release
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: npm run release:win
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload the installer
+        uses: actions/upload-artifact@v4
+        with:
+          name: your-little-music-library-windows
+          path: release/*.exe
+          if-no-files-found: error
